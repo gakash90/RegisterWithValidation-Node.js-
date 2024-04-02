@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Registration</title>
+</head>
+<body>
+<h2>User Registration Form</h2>
+<form id="registrationForm">
+  <label for="firstName">First Name:</label><br>
+  <input type="text" id="firstName" name="firstName" required><br><br>
+  
+  <label for="lastName">Last Name:</label><br>
+  <input type="text" id="lastName" name="lastName" required><br><br>
+  
+  <label for="gender">Gender:</label><br>
+  <select id="gender" name="gender" required>
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+    <option value="other">Other</option>
+  </select><br><br>
+  
+  <label for="email">Email:</label><br>
+  <input type="email" id="email" name="email" required><br><br>
+  
+  <label for="mobile">Mobile:</label><br>
+  <input type="tel" id="mobile" name="mobile" required pattern="[0-9]{10}"><br><br>
+  
+  <input type="submit" value="Register">
+</form>
+
+<script>
+document.getElementById("registrationForm").addEventListener("submit", function(event) {
+event.preventDefault();
+  
+  const formData = {
+    firstName: document.getElementById("firstName").value,
+    lastName: document.getElementById("lastName").value,
+    gender: document.getElementById("gender").value,
+    email: document.getElementById("email").value,
+    mobile: document.getElementById("mobile").value
+  };
+  
+  fetch("/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(formData)
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log("Response from server:", data);
+  })
+  .catch(error => {
+    console.error("There was a problem with your fetch operation:", error);
+  });
+});
+</script>
+
+</body>
+</html>
